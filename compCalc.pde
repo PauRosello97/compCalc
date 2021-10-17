@@ -20,20 +20,17 @@ float[] DESIRED_DISTANCES = {FOURTH, MINOR_SECOND};
 void setup(){
   
   float[] target = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-  float[] result = getPoint(target, 1);
-  result = getPoint(result, 0.1);
-  
-  result = getPoint(result, 0.01);
-  result = getPoint(result, 0.001);
-  result = getPoint(result, 0.0001);
-  result = getPoint(result, 0.00001);
-  result = getPoint(result, 0.000001);
-  
+  float[] result = getPoint(target, 1, 0);
+  result = getPoint(result, 0.1, 1);
+  result = getPoint(result, 0.01, 2);
+  result = getPoint(result, 0.001, 3);
+  result = getPoint(result, 0.0001, 4);
+  result = getPoint(result, 0.00001, 5);
+  result = getPoint(result, 0.000001, 6);
 }
 
-float[] getPoint(float[] target, float STEP_SIZE){
+float[] getPoint(float[] target, float STEP_SIZE, int precision){
   
-  int precision = str(STEP_SIZE).length()-2;
   float[] min = new float[12];
   float[] max = new float[12];
   for(int i=0; i<target.length; i++){
@@ -63,17 +60,16 @@ float[] getPoint(float[] target, float STEP_SIZE){
         minDifference = difference;
         closestPoint[0] = iP[0];
         closestPoint[1] = iP[1];
-      }
+      } 
       iP[1] += STEP_SIZE;
     }
     iP[0] += STEP_SIZE;
   }
   println();
   println("---------------------");
-  println("SEARCHED IN:");
+  println("ITERATION:" + precision);
   println("x : [" + min[0] + ", " + max[0] + "]");
   println("y : [" + min[1] + ", " + max[1] + "]");
-  println("WITH PRECISION: " + precision);
   println("DISTANCE A: " + getDistance(closestPoint, POINTS[0]));
   println("DISTANCE B: " + getDistance(closestPoint, POINTS[1]));
   println("RESULT: (" + toneToString(closestPoint, precision)  + ") - d: " + minDifference);
