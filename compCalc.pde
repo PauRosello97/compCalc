@@ -11,15 +11,15 @@ float MINOR_SEVENTH = 7.17;
 float SEVENTH = 6.907;
 float OCTAVE = 1;
 
-float[] C = {0, 0};
-float[] Fs = {DIMINISHED_FIFTH, 0};
+float[] C = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+float[] Fs = {DIMINISHED_FIFTH, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 float[][] POINTS = {C, Fs};
 float[] DESIRED_DISTANCES = {FOURTH, MINOR_SECOND};
 
 void setup(){
   
-  float[] target = {0, 0};
+  float[] target = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
   float[] result = getPoint(target, 1);
   result = getPoint(result, 0.1);
   
@@ -40,10 +40,10 @@ float[] getPoint(float[] target, float STEP_SIZE){
   int iterations = 0;
   for(int i=0; i<max.length; i++) iterations += (max[i]-min[i])/STEP_SIZE;
   
-  float[] iP = {0,0};
+  float[] iP = {0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
   
   float minDifference = 10000000000000000000.0;
-  float[] closestPoint = {0.0,0.0};
+  float[] closestPoint = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
   iP[0] = min[0];
   while(iP[0]<max[0]){
     iP[1] = min[1];
@@ -65,7 +65,6 @@ float[] getPoint(float[] target, float STEP_SIZE){
     }
     iP[0] += STEP_SIZE;
   }
-  String pre = "%.0"+precision+"f";
   println();
   println("---------------------");
   println("SEARCHED IN:");
@@ -74,7 +73,7 @@ float[] getPoint(float[] target, float STEP_SIZE){
   println("WITH PRECISION: " + precision);
   println("DISTANCE A: " + getDistance(closestPoint, POINTS[0]));
   println("DISTANCE B: " + getDistance(closestPoint, POINTS[1]));
-  println("RESULT: (" + String.format(pre, closestPoint[0]) + ", " + String.format(pre, closestPoint[1]) + ") - d: " + minDifference);
+  println("RESULT: (" + toneToString(closestPoint, precision)  + ") - d: " + minDifference);
   
   float[] result = {closestPoint[0], closestPoint[1]};
   return result;
@@ -87,4 +86,13 @@ float getDistance(float[] pointA, float[] pointB){
     sum += pow(pointA[i] + pointB[i], 2);
   }
   return sqrt(sum);
+}
+
+String toneToString(float[] point, int precision){
+  String pre = "%.0"+precision+"f";
+  String s = "";
+  for(int i=0; i<point.length; i++){
+    s += String.format(pre, point[i]) + (i==point.length-1? "" : ", ");
+  }
+  return s;
 }
