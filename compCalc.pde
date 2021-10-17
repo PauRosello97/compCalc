@@ -34,8 +34,12 @@ void setup(){
 float[] getPoint(float[] target, float STEP_SIZE){
   
   int precision = str(STEP_SIZE).length()-2;
-  float[] min = {target[0] - STEP_SIZE*100, target[1] - STEP_SIZE*100};
-  float[] max = {target[0] + STEP_SIZE*100, target[1] + STEP_SIZE*100};
+  float[] min = new float[12];
+  float[] max = new float[12];
+  for(int i=0; i<target.length; i++){
+    min[i] = target[i] - STEP_SIZE*10000;
+    max[i] = target[i] + STEP_SIZE*10000;
+  }
   
   int iterations = 0;
   for(int i=0; i<max.length; i++) iterations += (max[i]-min[i])/STEP_SIZE;
