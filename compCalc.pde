@@ -27,6 +27,7 @@ void setup(){
   result = getPoint(result, 0.0001, 4);
   result = getPoint(result, 0.00001, 5);
   result = getPoint(result, 0.000001, 6);
+  
 }
 
 float[] getPoint(float[] target, float STEP_SIZE, int precision){
@@ -34,8 +35,8 @@ float[] getPoint(float[] target, float STEP_SIZE, int precision){
   float[] min = new float[12];
   float[] max = new float[12];
   for(int i=0; i<target.length; i++){
-    min[i] = target[i] - STEP_SIZE*10000;
-    max[i] = target[i] + STEP_SIZE*10000;
+    min[i] = target[i] - STEP_SIZE*100;
+    max[i] = target[i] + STEP_SIZE*100;
   }
   
   int iterations = 0;
@@ -50,7 +51,8 @@ float[] getPoint(float[] target, float STEP_SIZE, int precision){
   while(iP[0]<max[0]){
     iP[1] = min[1];
     while(iP[1]<max[1]){
-      //println(iP[0] + ", " + iP[1]);
+      
+      /* WHILE BEGINNING */
       float[] distances = {getDistance(iP, POINTS[0]), getDistance(iP, POINTS[1])};
       
       float difference = 0;
@@ -61,6 +63,8 @@ float[] getPoint(float[] target, float STEP_SIZE, int precision){
         closestPoint[0] = iP[0];
         closestPoint[1] = iP[1];
       } 
+      /* WHILE END */
+      
       iP[1] += STEP_SIZE;
     }
     iP[0] += STEP_SIZE;
