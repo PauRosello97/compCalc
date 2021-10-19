@@ -1,7 +1,8 @@
 float UNISON = 0;
 float MINOR_SECOND = 7.907;
 float SECOND = 6.17;
-float MINOR_THIRD = 4.322;
+float MINOR_THIRD = 4.907;
+float THIRD = 4.322;
 float FOURTH = 3.585;
 float DIMINISHED_FIFTH = 11.492;
 float FIFTH = 2.585;
@@ -12,7 +13,9 @@ float SEVENTH = 6.907;
 float OCTAVE = 1;
 
 float[] C = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+float[] F = {-3.585, 0.002071, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 float[] Fs = {DIMINISHED_FIFTH, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+// Looking for F
 
 float[][] POINTS = {C, Fs};
 float[] DESIRED_DISTANCES = {FOURTH, MINOR_SECOND};
@@ -35,14 +38,14 @@ float[] getPoint(float[] target, float STEP_SIZE, int precision){
   float[] min = new float[12];
   float[] max = new float[12];
   for(int i=0; i<target.length; i++){
-    min[i] = target[i] - STEP_SIZE*100;
-    max[i] = target[i] + STEP_SIZE*100;
+    min[i] = target[i] - STEP_SIZE*10000;
+    max[i] = target[i] + STEP_SIZE*10000;
   }
   
   int iterations = 0;
   for(int i=0; i<max.length; i++) iterations += (max[i]-min[i])/STEP_SIZE;
   
-  float[] iP = {0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  float[] iP = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
   
   float minDifference = 10000000000000000000.0;
   float[] closestPoint = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -51,20 +54,33 @@ float[] getPoint(float[] target, float STEP_SIZE, int precision){
   while(iP[0]<max[0]){
     iP[1] = min[1];
     while(iP[1]<max[1]){
+      iP[2] = min[2];
+      /*
+      while(iP[2]<max[2]){
+        iP[3] = min[3];
+        while(iP[3]<max[3]){
+          */
       
-      /* WHILE BEGINNING */
-      float[] distances = {getDistance(iP, POINTS[0]), getDistance(iP, POINTS[1])};
-      
-      float difference = 0;
-      for(int i=0; i<distances.length; i++) difference += abs((distances[i]-DESIRED_DISTANCES[i]));
-      
-      if(difference<minDifference){
-        minDifference = difference;
-        closestPoint[0] = iP[0];
-        closestPoint[1] = iP[1];
-      } 
-      /* WHILE END */
-      
+                                        /* WHILE BEGINNING */
+                                        float[] distances = new float[POINTS.length];
+                                        for(int i=0; i<distances.length; i++) distances[i] = getDistance(iP, POINTS[i]);
+                                        
+                                        float difference = 0;
+                                        for(int i=0; i<distances.length; i++) difference += abs((distances[i]-DESIRED_DISTANCES[i]));
+                                        
+                                        if(difference<minDifference){
+                                          minDifference = difference;
+                                          closestPoint[0] = iP[0];
+                                          closestPoint[1] = iP[1];
+                                          closestPoint[2] = iP[2];
+                                          closestPoint[3] = iP[3];
+                                        } 
+                                        /* WHILE END */
+                       /*                 
+          iP[3] += STEP_SIZE;
+        } 
+        iP[2] += STEP_SIZE;
+      }*/
       iP[1] += STEP_SIZE;
     }
     iP[0] += STEP_SIZE;
